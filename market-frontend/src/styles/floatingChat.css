@@ -1,0 +1,68 @@
+
+.floating-chat-container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding-right: 20px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.floating-chat-window {
+  position: fixed;
+  bottom: 0;
+  width: 330px;
+  height: 450px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.floating-chat-header {
+  height: 42px;
+  min-height: 42px;
+  padding: 0 12px;
+  background: #1877f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.floating-chat-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.floating-chat-controls button {
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.floating-chat-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ChatRoom 내부의 기존 카드가 창 크기에 맞게 표시되도록 조정 */
+.floating-chat-body > * {
+  height: 100%;
+  margin: 0;
+}
+
+.floating-chat-window.minimized {
+  height: 42px;
+}
