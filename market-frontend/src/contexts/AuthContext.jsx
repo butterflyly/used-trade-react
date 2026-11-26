@@ -39,30 +39,45 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // 로그아웃
-  const handleLogout = async (
-    e,
-    confirmMessage = true,
-    redirectPath = '/service/items/list/1'
-  ) => {
-    e?.preventDefault();
+ // 로그아웃
+const handleLogout = async (
+  e,
+  confirmMessage = true,
+  redirectPath = null
+) => {
+  e?.preventDefault();
 
-    if (confirmMessage && !window.confirm('로그아웃 하시겠습니까?')) {
-      return;
+  if (confirmMessage && !window.confirm('로그아웃 하시겠습니까?')) {
+    return;
+  }
+
+  // 로그아웃 버튼을 누른 현재 주소 저장
+  const currentPath =
+    window.location.pathname +
+    window.location.search +
+    window.location.hash;
+
+  try {
+    await Api.postRequest('/api/users/logout');
+
+    setUser(null);
+    setIsAuthenticated(false);
+
+    // 별도 경로를 전달했다면 해당 경로, 아니면 현재 페이지
+    const targetPath = redirectPath || currentPath;
+
+    // 로그인 페이지 등으로 돌아가는 상황 방지
+    if (targetPath.includes('/users/auth/login')) {
+      window.location.href = '/service/items/list/1';
+    } else {
+      window.location.href = targetPath;
     }
 
-    try {
-      await Api.postRequest('/api/users/logout');
-
-      setUser(null);
-      setIsAuthenticated(false);
-
-      window.location.href = redirectPath;
-    } catch (error) {
-      console.error('로그아웃 처리 중 에러:', error);
-      window.location.reload();
-    }
-  };
+  } catch (error) {
+    console.error('로그아웃 처리 중 에러:', error);
+    window.location.reload();
+  }
+};
 
   // 앱 최초 실행 시 로그인 상태 확인
   useEffect(() => {

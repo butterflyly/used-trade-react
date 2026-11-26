@@ -1,18 +1,23 @@
-
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const ChatContext = createContext(null);
 
 export function ChatProvider({ children }) {
-  // 현재 열려 있는 채팅방 목록
   const [openChats, setOpenChats] = useState([]);
+
+  // 채팅 목록 표시 여부
+  const [isChatListOpen, setIsChatListOpen] = useState(false);
+
+  // 채팅 목록 열기 / 닫기
+  const toggleChatList = useCallback(() => {
+    setIsChatListOpen(prev => !prev);
+  }, []);
 
   // 채팅방 열기
   const openChat = useCallback((roomId) => {
     const id = String(roomId);
 
     setOpenChats(prev => {
-      // 이미 열려 있는 채팅방이면 새로 만들지 않고 복원
       const existing = prev.find(chat => chat.roomId === id);
 
       if (existing) {
@@ -23,7 +28,6 @@ export function ChatProvider({ children }) {
         );
       }
 
-      // 새로운 채팅방 추가
       return [
         ...prev,
         {
@@ -32,6 +36,8 @@ export function ChatProvider({ children }) {
         }
       ];
     });
+
+    setIsChatListOpen(false);
   }, []);
 
   // 채팅방 최소화 / 복원
@@ -76,7 +82,9 @@ export function ChatProvider({ children }) {
         toggleMinimize,
         minimizeChat,
         closeChat,
-        closeAllChats
+        closeAllChats,
+        isChatListOpen,
+        toggleChatList
       }}
     >
       {children}
@@ -84,7 +92,6 @@ export function ChatProvider({ children }) {
   );
 }
 
-// Context 사용을 위한 커스텀 Hook
 export function useChat() {
   const context = useContext(ChatContext);
 

@@ -15,6 +15,10 @@ export default defineConfig({
         '/itemImages': {
       target: 'http://localhost:8080',
       changeOrigin: true
+    },
+    '/chatImages': {
+      target: 'http://localhost:8080',
+      changeOrigin: true
     }
   },
   },

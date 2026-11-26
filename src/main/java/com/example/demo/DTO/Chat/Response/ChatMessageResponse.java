@@ -19,6 +19,7 @@ public record ChatMessageResponse(
 ) {
 
     public static ChatMessageResponse of(ChatMessage m, String loginUsername) {
+
         boolean isMineResult = false;
         if (m.getSender() != null) {
             isMineResult = m.getSender().getUsername().equals(loginUsername);

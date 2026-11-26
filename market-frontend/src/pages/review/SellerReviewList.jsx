@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Api from '../../api/api';
+import ReviewReplies from '../../components/review/ReviewReplies';
 
 export default function SellerReviewList() {
   const { sellerId } = useParams(); // URL 경로에서 sellerId 추출
@@ -61,7 +62,12 @@ export default function SellerReviewList() {
               <span className="badge bg-light text-dark text-decoration-none border mt-2">
                 <i className="bi bi-box-seam me-1"></i>거래 상품: {review.itemTitle}
               </span>
+              <ReviewReplies
+                  reviewId={review.id}
+                  allowRoot={false}
+                />
             </div>
+            
           ))}
         </div>
       ) : (

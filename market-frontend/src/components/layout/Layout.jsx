@@ -3,7 +3,8 @@ import { Outlet } from 'react-router-dom'; // 아래쪽 빈 구멍(Outlet)에는
 import Navbar from './Navbar'; // 네비게이션바 컴포넌트
 import '../../assets/css/layout.css';
 import FloatingChatContainer from '../chat/FloatingChatContainer';
-
+import ChatLauncher from '../chat/ChatLauncher';
+import ChatListPanel from '../chat/ChatListPanel';
 
 function Layout() {
   return (
@@ -16,6 +17,8 @@ function Layout() {
         <Outlet />
       </main>
 
+        <ChatListPanel />
+       <ChatLauncher />
        <FloatingChatContainer />
     </div>
   );

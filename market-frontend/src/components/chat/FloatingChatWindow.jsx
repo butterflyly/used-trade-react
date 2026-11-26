@@ -46,13 +46,10 @@ export default function FloatingChatWindow({
 
       {/* 최소화 상태에서는 채팅 내용 숨김 */}
       {!minimized && (
-       <div
-            className="floating-chat-body"
-            style={{ display: minimized ? 'none' : 'block' }}
-            >
+          <div className="floating-chat-body">
             <ChatRoom roomId={roomId} floating={true} />
-            </div>
-      )}
+          </div>
+        )}
     </div>
   );
 }

@@ -8,11 +8,14 @@ import com.example.demo.Security.OAuth2.Google.GoogleUserDetails;
 import com.example.demo.Security.OAuth2.Naver.NaverUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /*시큐리티 설정(SecurityConfig)에서 loginProcessingUrl("/login") 해놔서
  * /login 요청오면 자동으로 UserDetailsService타입으로 IoC되어있는
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class PrincipalOAuth2UserService  extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -69,6 +73,7 @@ public class PrincipalOAuth2UserService  extends DefaultOAuth2UserService {
                     .nickname(name)
                     .providers(provider)
                     .providerIds(providerId)
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                     .profileUrl("/") // 일단 빈값
                     .role(role)
                     .build();

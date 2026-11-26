@@ -20,8 +20,6 @@ public class ReviewCommandService {
     private final ReviewRepository reviewRepository;
     private final ItemReadService itemReadService;
     private final ReviewReadService reviewReadService;
-    private final UserReadService userReadService;
-
 
     public void createReview(Long itemId, ReviewRequest dto, String loginUsername) {
         Item item = itemReadService.getItemEntity(itemId);

@@ -8,6 +8,9 @@ export function useLogin() {
   const navigate = useNavigate();
   const { checkLoginStatus } = useAuth();
 
+
+
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -26,6 +29,8 @@ export function useLogin() {
 
     fetchLoginInfo();
   }, [searchParams]);
+
+
 
   // 백엔드 컨트롤러(/login-info)와 연동하여 시큐리티 메시지 및 초기 폼 데이터 가져오기
   const fetchLoginInfo = async () => {
@@ -103,14 +108,21 @@ export function useLogin() {
     }
   };
 
+  // Spring Boot 서버 주소
+  const BACKEND_URL = 'http://localhost:8080';
   // 소셜 로그인 URL 설정
   const redirectParam = searchParams.get('redirectUrl');
-  const googleLoginUrl = `/oauth2/authorization/google${redirectParam ? `?redirectUrl=${encodeURIComponent(redirectParam)}` : ''}`;
-  const naverLoginUrl = `/oauth2/authorization/naver${redirectParam ? `?redirectUrl=${encodeURIComponent(redirectParam)}` : ''}`;
+  const googleLoginUrl =
+  `${BACKEND_URL}/oauth2/authorization/google${redirectParam ? `?redirectUrl=${encodeURIComponent(redirectParam)}` : ''}`;
+
+  const naverLoginUrl =
+  `${BACKEND_URL}/oauth2/authorization/naver${redirectParam ? `?redirectUrl=${encodeURIComponent(redirectParam)}` : ''}`;  
+
 
   return {
     formData,
     errorMessage,
+    BACKEND_URL,
     loading,
     handleChange,
     handleSubmit,

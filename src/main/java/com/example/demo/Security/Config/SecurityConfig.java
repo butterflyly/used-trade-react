@@ -88,9 +88,6 @@ public class SecurityConfig {
                         .requestMatchers("/service/users/profile/**").authenticated()
                         .requestMatchers("/api/view/users/mypage/**","/api/view/users/profile/**").authenticated()
 
-                        // 3. [유저 도메인]
-                        .requestMatchers("/users/register",
-                                "/users/login","/users/find-userId","/uers/find-password").anonymous()
 
                         .requestMatchers("/api/users/login", "/api/users/register/**"
                                 ,"/api/users/find-username" , "/api/users/find-password"
@@ -105,15 +102,6 @@ public class SecurityConfig {
                                 "/api/users/logout"
                         ).authenticated()
 
-                        .requestMatchers(
-                                "/users/mypage",
-                                "/users/items/my-list",
-                                "/users/mypage/chats",
-                                "/users/update",
-                                "/users/update/password",
-                                "/users/withdraw/confirm"
-                        ).authenticated()
-
                         // 4. [상품 도메인 React URL]
                         .requestMatchers("/service/items/list/**","/service/items/detail/**").permitAll()
                         .requestMatchers("/api/view/items/list/**","/api/view/items/detail/**").permitAll()
@@ -123,10 +111,6 @@ public class SecurityConfig {
                         // [날씨 API 등 기타 퍼블릭 경로가 있다면 추가]
                         .requestMatchers("/error","/api/weather/**", "/weather/**").permitAll()
 
-                        // 4. [상품 도메인]
-                        .requestMatchers(HttpMethod.GET, "/items" +
-                                "/list/**", "/items/detail/**").permitAll()
-                        .requestMatchers("/items/create", "/items/edit/**").authenticated()
                         .requestMatchers("/api/items/**").authenticated()
 
                         // 5. 웹소켓
@@ -138,7 +122,6 @@ public class SecurityConfig {
 
                         // 6. [신고 / 어드민]
                         .requestMatchers("/api/reports/**").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // 7 .[채팅 React URL]
                         .requestMatchers("/service/chat/**").authenticated()
@@ -146,7 +129,7 @@ public class SecurityConfig {
 
                         // 7. [채팅]
                         .requestMatchers("/api/chat-room/**", "/api/chat/**",
-                                "/chat/room/**", "/api/notifications/**").authenticated()
+                          "/api/notifications/**","/chat/message").authenticated()
 
                         // 8. [리뷰 React URL]
                         .requestMatchers("/service/reviews/my/**").authenticated()
@@ -155,17 +138,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/view/reviews/seller/**").permitAll()
 
                         // 8. [리뷰]
-                        .requestMatchers(HttpMethod.GET, "/reviews/seller/**").permitAll()
-                        .requestMatchers("/reviews/write", "/reviews/edit/**", "/api/reviews/**").authenticated()
+                        .requestMatchers( "/api/reviews/**").authenticated()
 
                         .anyRequest().authenticated()
-
                 )
-
 
                 //  소셜 로그인 핸들러 및 서비스 바인딩 구조 추가
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/users/login") // 비로그인 유저 보호막 작동 시 튕겨나갈 소셜 연동 로그인 페이지
+                        .loginPage("/service/users/auth/login") // 비로그인 유저 보호막 작동 시 튕겨나갈 소셜 연동 로그인 페이지
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOAuth2UserService) // 사용자 정보 파싱 서비스 등록
                         )
@@ -215,10 +195,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

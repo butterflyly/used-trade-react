@@ -45,20 +45,22 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         boolean isNewUser = principalDetails.isNewUser();
 
         String targetUrl;
+        String frontendUrl = "http://localhost:5173";
 
         if (isNewUser) {
             // 최초 가입자는 프로필 설정이나 회원정보 완성을 위해 마이페이지(또는 회원가입 완료 페이지)로 보냄
-            targetUrl = "/users/mypage";
+            targetUrl = frontendUrl + "/service/users/profile/mypage";
         } else {
             //  [핵심] 쿠키에 저장해둔 redirectUrl 파라미터 읽기
             String redirectUrl = getCookieValue(request, "redirectUrl");
 
-            if (redirectUrl != null && !redirectUrl.isBlank() && !redirectUrl.contains("/users/login")) {
-                targetUrl = redirectUrl;
-                // 사용한 쿠키 즉시 만료(삭제)
+            if (redirectUrl != null && !redirectUrl.isBlank()
+                    && !redirectUrl.contains("/service/users/auth/login")) {
+                // 기존 redirectUrl 처리
+                targetUrl = frontendUrl + redirectUrl;
                 deleteCookie(response, "redirectUrl");
             } else {
-                targetUrl = "/items/list/1"; // 기본 이동 주소
+                targetUrl = frontendUrl + "/";
             }
         }
 

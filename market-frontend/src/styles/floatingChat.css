@@ -1,68 +1,221 @@
 
+/* 채팅창 전체 컨테이너 */
 .floating-chat-container {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  padding-right: 20px;
-  z-index: 1000;
-  pointer-events: none;
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    z-index: 1000;
+    pointer-events: none;
 }
 
+/* 개별 채팅창 */
 .floating-chat-window {
-  position: fixed;
-  bottom: 0;
-  width: 330px;
-  height: 450px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px 10px 0 0;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.18);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  pointer-events: auto;
+    width: 330px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    pointer-events: auto;
+    transition: height 0.2s ease;
 }
 
-.floating-chat-header {
-  height: 42px;
-  min-height: 42px;
-  padding: 0 12px;
-  background: #1877f2;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-}
-
-.floating-chat-controls {
-  display: flex;
-  gap: 8px;
-}
-
-.floating-chat-controls button {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.floating-chat-body {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* ChatRoom 내부의 기존 카드가 창 크기에 맞게 표시되도록 조정 */
-.floating-chat-body > * {
-  height: 100%;
-  margin: 0;
-}
-
+/* 최소화 상태 */
 .floating-chat-window.minimized {
-  height: 42px;
+    height: 48px;
+}
+
+/* 상단 헤더 */
+.floating-chat-header {
+    height: 48px;
+    min-height: 48px;
+    padding: 0 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: default;
+}
+
+/* 헤더 버튼 영역 */
+.floating-chat-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 최소화 및 닫기 버튼 */
+.floating-chat-controls button {
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.floating-chat-controls button:hover {
+    color: #111;
+}
+
+/* 채팅 본문 */
+.floating-chat-body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+    .floating-chat-container {
+        right: 0;
+        left: 0;
+        gap: 0;
+    }
+
+    .floating-chat-window {
+        width: 100%;
+        height: min(70vh, 500px);
+    }
+
+    .floating-chat-window:not(:last-child) {
+        display: none;
+    }
+}
+
+/* 우측 하단 채팅 아이콘 */
+.chat-launcher {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+    background-color: #0084ff;
+    color: white;
+
+    font-size: 26px;
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 2000;
+
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.chat-launcher:hover {
+    background-color: #006edc;
+    transform: scale(1.08);
+}
+
+.chat-launcher:active {
+    transform: scale(0.95);
+}
+
+
+.chat-list-panel {
+    position: fixed;
+    right: 25px;
+    bottom: 100px;
+    width: 340px;
+    max-height: 480px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    z-index: 1999;
+}
+
+.chat-list-header {
+    padding: 18px;
+    font-size: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.chat-list-tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+
+.chat-list-tabs button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: white;
+    color: #777;
+}
+
+.chat-list-tabs button.active {
+    color: #0084ff;
+    font-weight: bold;
+    border-bottom: 2px solid #0084ff;
+}
+
+.chat-list-content {
+    overflow-y: auto;
+    min-height: 100px;
+}
+
+.chat-list-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: none;
+    background: white;
+    text-align: left;
+}
+
+.chat-list-item:hover {
+    background: #f5f6f7;
+}
+
+.chat-list-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.chat-list-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chat-list-info span {
+    color: #888;
+    font-size: 13px;
+}
+.chat-list-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-top: 1px solid #eee;
 }

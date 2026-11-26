@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Api from '../../api/api';
+import ReviewReplies from '../../components/review/ReviewReplies';
 
 export default function MyReviews() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -156,6 +157,10 @@ export default function MyReviews() {
                   </div>
                 )}
               </div>
+               <ReviewReplies
+                  reviewId={review.id}
+                  allowRoot={type === 'written'}
+                />
             </div>
           ))}
         </div>
